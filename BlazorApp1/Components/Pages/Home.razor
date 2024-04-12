@@ -1,0 +1,57 @@
+﻿@page "/"
+
+
+<PageTitle>Game Catalog</PageTitle>
+
+<h1>Intento!</h1>
+
+@* to prevent that the list is null: *@
+@if(games is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{	
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Id</th>
+				<th scope="col">Name</th>
+				<th scope="col">Genre</th>
+				<th scope="col">Price</th>
+				<th scope="col">Release Date</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var game in games)
+			{
+				<tr>
+					<th scope="row">@game.Id</th>
+					<td>@game.Name</td>
+					<td>@game.Genre</td>
+					<td>@game.Price</td>
+					<td>@game.ReleaseDate</td>
+					<td>
+
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+
+@code{
+	//to instanciate the data (GameClient), we put it in a variable:
+	private GamesClient client = new();
+
+	private GameSummary[]? games; //to inicialize this array, we need a Lifecycle event( or method)
+
+	//to initialize the array(populate it), we use this Lifecycle override
+	protected override void OnInitialized()
+	{
+		games = client.GetGames();
+	}
+
+}
