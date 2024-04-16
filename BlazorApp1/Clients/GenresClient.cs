@@ -29,5 +29,7 @@ namespace BlazorApp1.Clients
             ];
         //to retrieve the list of genres
         public Genre[] GetGenres() => genres;
+
+        
     }
 }

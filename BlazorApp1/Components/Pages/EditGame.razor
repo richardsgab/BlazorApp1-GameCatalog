@@ -13,7 +13,7 @@ else
 {    
     <div class="row">
         <div class="col-md-6">
-            <EditForm Model="@game" FormName="editGame">
+            <EditForm Model="@game" FormName="editGame" OnSubmit="HandleSubmit">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name:</label>
                     <InputText id="name" @bind-Value="game.Name" class="form-control"  />       
@@ -46,7 +46,8 @@ else
 
 @* defining the instances of Gamedetails objects that is gonna be binding with the Form(input) *@
 @code {
-    private GameDetails game { get; set; } = new()
+    [SupplyParameterFromForm]//for defining "game" als "model? to add to it the data submitted
+    private GameDetails game { get; set; } = new()//"game" is the new game submited
 	{
 		Name = string.Empty,
 		ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
@@ -54,10 +55,19 @@ else
 
     //the instance of genderclient:
     private GenresClient genresclient = new();
+    //and the instance of GamesClient:
+    private GamesClient gamesClient = new();
 
     private Genre[]? genres;
     protected override void OnInitialized()
     {
         genres = genresclient.GetGenres();
+    }
+
+    //To handle de Add of new games
+    //Then we must include this method in the EditForm
+    private void HandleSubmit()
+    {
+        gamesClient.AddGame(game);
     }
 }
